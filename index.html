@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ff">
+  <meta name="description" content="MindMatch — a little game for a brighter brain.">
+  <title>MindMatch — Find your flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="MindMatch home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span>mind<span class="brand-accent">match</span><small>PLAY YOUR WAY</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="top-note"><span class="sparkle">✦</span> A little brain break</span>
+        <div class="music-control" aria-label="Background beat controls">
+          <button class="music-toggle" type="button" aria-label="Play upbeat music" aria-pressed="false" title="Play upbeat music">
+            <svg class="music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13M9 18c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2Z"/></svg>
+            <span>Play music</span>
+          </button>
+          <label class="volume-control" title="Music volume">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 4a4 4 0 0 1 0 6"/></svg>
+            <input class="music-volume" type="range" min="0" max="100" value="80" aria-label="Music volume">
+          </label>
+        </div>
+        <button class="icon-button sound-toggle" type="button" aria-label="Turn sound off" aria-pressed="true" title="Sound on">
+          <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 4a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"/></svg>
+          <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm5 4 5 6m0-6-5 6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero" id="top" aria-labelledby="welcome-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> YOUR DAILY DOSE OF DELIGHT</div>
+        <h1 id="welcome-title">Train your brain,<br><span>one match at a time.</span></h1>
+        <p>Take a breath, find your focus, and turn over a little joy. How many pairs can you find?</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-halo"></div><div class="art-card art-card-back">✿</div><div class="art-card art-card-front">☀️</div>
+        <span class="art-orbit orbit-one">✦</span><span class="art-orbit orbit-two">✧</span><span class="art-dot"></span>
+      </div>
+    </section>
+
+    <section class="game-panel" aria-label="Memory game">
+      <div class="game-toolbar">
+        <div class="difficulty-group">
+          <label id="difficulty-label">DIFFICULTY</label>
+          <div class="difficulty-picker" id="difficulty-picker">
+            <button class="difficulty-trigger" id="difficulty-trigger" type="button" aria-labelledby="difficulty-label difficulty-current" aria-haspopup="listbox" aria-expanded="false">
+              <span class="difficulty-current" id="difficulty-current">Medium</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+            </button>
+            <div class="difficulty-menu" id="difficulty-menu" role="listbox" aria-labelledby="difficulty-label" hidden>
+              <button class="difficulty-option" type="button" role="option" aria-selected="false" data-difficulty-option="easy"><span class="difficulty-option-mark easy-mark">✦</span><span><strong>Easy</strong><small>2 rows · +1 column each level</small></span><span class="difficulty-check">✓</span></button>
+              <button class="difficulty-option" type="button" role="option" aria-selected="true" data-difficulty-option="medium"><span class="difficulty-option-mark medium-mark">✦</span><span><strong>Medium</strong><small>4 rows from Level 2</small></span><span class="difficulty-check">✓</span></button>
+              <button class="difficulty-option" type="button" role="option" aria-selected="false" data-difficulty-option="hard"><span class="difficulty-option-mark hard-mark">✦</span><span><strong>Hard</strong><small>6 rows from Level 2</small></span><span class="difficulty-check">✓</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="game-actions">
+          <button class="button button-quiet" id="restart" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 1 0 1.8-4.45L3.5 7.5M3.5 3.8v3.7h3.7"/></svg><span>Restart</span></button>
+          <button class="button button-primary" id="new-game" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg><span>New game</span></button>
+        </div>
+      </div>
+
+      <div class="stats" aria-label="Game statistics">
+        <div class="stat"><span class="stat-icon moves-icon">↗</span><span class="stat-copy"><span class="stat-label">MOVES</span><strong id="moves">0</strong></span></div>
+        <div class="stat"><span class="stat-icon pairs-icon">♡</span><span class="stat-copy"><span class="stat-label">MATCHED</span><strong><span id="matched">0</span><span class="stat-total"> / 8</span></strong></span></div>
+        <div class="stat"><span class="stat-icon time-icon">◷</span><span class="stat-copy"><span class="stat-label">TIME</span><strong id="timer">00:00</strong></span></div>
+        <div class="stat"><span class="stat-icon accuracy-icon">✧</span><span class="stat-copy"><span class="stat-label">ACCURACY</span><strong id="accuracy">—</strong></span></div>
+      </div>
+
+      <div class="board-heading"><div><span class="level-badge" id="level-badge">LEVEL 1</span><span class="personal-best" id="personal-best" aria-live="polite">BEST —</span><h2>Find your pairs</h2><p id="board-hint">A little focus goes a long way.</p></div><button class="pause-button" id="pause" type="button" aria-pressed="false"><svg class="pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg><svg class="play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6z"/></svg><span>Pause</span></button></div>
+      <div class="board-wrap" id="board-wrap"><div class="game-board" id="game-board" role="group" aria-label="Memory cards"></div><div class="pause-overlay" id="pause-overlay" hidden><div class="pause-symbol">Ⅱ</div><strong>Take your time</strong><span>Your game is paused</span><button class="button button-primary" id="resume-overlay" type="button">Keep playing</button></div></div>
+      <p class="game-footnote"><span>✦</span> Take it at your own pace. Your mind will thank you.</p>
+    </section>
+
+    <footer><span>© 2026 <strong>PÉ Studio.</strong> Crafted with intention.</span><span class="footer-note">MADE FOR MOMENTS OF FLOW <span>✿</span></span></footer>
+  </main>
+
+  <div class="modal-backdrop" id="win-modal" role="dialog" aria-modal="true" aria-labelledby="win-title" hidden>
+    <div class="win-modal"><button class="modal-close" id="close-modal" type="button" aria-label="Close results">×</button><div class="confetti confetti-a">✦</div><div class="confetti confetti-b">✿</div><div class="win-icon" aria-hidden="true">🎉</div><div class="win-eyebrow" id="win-eyebrow">LEVEL COMPLETE</div><h2 id="win-title">Congratulations!<br><span>You did it!</span></h2><p class="win-message" id="win-message">Look at you, making all the right connections.</p><div class="win-stats"><div><span>LEVEL</span><strong id="final-level">1</strong></div><div><span>MOVES</span><strong id="final-moves">0</strong></div><div><span>ACCURACY</span><strong id="final-accuracy">0%</strong></div></div><div class="win-time"><span>COMPLETION TIME</span><strong id="final-time">00:00</strong></div><button class="button button-primary play-again" id="play-again" type="button">Next level <span>↗</span></button></div>
+  </div>
+</body>
+</html>
