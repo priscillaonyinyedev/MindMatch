@@ -48,6 +48,9 @@
   let musicInterval = null;
   let beatStep = 0;
   let musicStarting = false;
+  let deferredInstallPrompt = null;
+  let leaveGuardArmed = false;
+  let exitConfirmed = false;
   let mismatchTimeout = null;
   const beatDuration = 60 / 92 / 2;
 
@@ -314,6 +317,7 @@
     if (paused || locked) return;
     const button = board.children[index];
     if (button.classList.contains('is-flipped') || button.classList.contains('is-matched')) return;
+    leaveGuardArmed = true;
     if (!started) { started = true; startTimer(); }
     button.classList.add('is-flipped');
     const symbol = cards[index].symbol;
@@ -449,15 +453,101 @@
     soundButton.title = soundEnabled ? 'Sound on' : 'Sound off';
   });
   musicButton.addEventListener('click', async () => {
-    if (musicPlaying) pauseMusic(); else await startMusic();
+    if (musicPlaying) pauseMusic(); else { leaveGuardArmed = true; await startMusic(); }
   });
   musicVolume.addEventListener('input', () => {
     if (!musicMaster || !audioContext) return;
     musicMaster.gain.setTargetAtTime(musicPlaying ? musicLevel() : 0, audioContext.currentTime, 0.08);
   });
+  // Stop the beat when the player leaves this tab. It stays paused when they return.
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && musicPlaying && audioContext?.state === 'suspended') audioContext.resume();
+    if (document.hidden && musicPlaying) pauseMusic();
   });
+  window.addEventListener('pagehide', () => { if (musicPlaying) pauseMusic(); });
+
+  const installButton = document.querySelector('#install-app');
+  const exitModal = document.querySelector('#exit-modal');
+  const exitInstallButton = document.querySelector('#exit-install');
+  const homeHelp = document.querySelector('#home-help');
+  const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isAppleMobile) installButton.hidden = false;
+
+  function openExitDialog() {
+    document.querySelector('#exit-title').textContent = 'Leaving already?';
+    document.querySelector('#exit-message').textContent = 'Add MindMatch to your home screen so your next brain break is only a tap away. Do you want to leave?';
+    homeHelp.hidden = true;
+    exitModal.hidden = false;
+    document.querySelector('#exit-stay').focus();
+  }
+
+  function closeExitDialog() {
+    exitModal.hidden = true;
+    document.querySelector('#leave-game').focus();
+  }
+
+  async function offerInstall() {
+    if (deferredInstallPrompt) {
+      const installPrompt = deferredInstallPrompt;
+      await installPrompt.prompt();
+      await installPrompt.userChoice;
+      if (deferredInstallPrompt === installPrompt) deferredInstallPrompt = null;
+      installButton.hidden = true;
+      return;
+    }
+    homeHelp.textContent = isAppleMobile
+      ? 'On iPhone or iPad: tap Share, then choose Add to Home Screen.'
+      : 'Open your browser menu and choose Install MindMatch or Add to Home Screen.';
+    homeHelp.hidden = false;
+  }
+
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    installButton.hidden = false;
+  });
+  window.addEventListener('appinstalled', () => { installButton.hidden = true; deferredInstallPrompt = null; });
+  installButton.addEventListener('click', offerInstall);
+  exitInstallButton.addEventListener('click', offerInstall);
+  document.querySelector('#leave-game').addEventListener('click', openExitDialog);
+  document.querySelector('#exit-stay').addEventListener('click', closeExitDialog);
+  document.querySelector('#exit-close').addEventListener('click', closeExitDialog);
+  exitModal.addEventListener('click', event => { if (event.target === exitModal) closeExitDialog(); });
+  document.querySelector('#exit-confirm').addEventListener('click', () => {
+    exitConfirmed = true;
+    if (window.history.length > 1 && document.referrer) {
+      window.history.back();
+      window.setTimeout(() => {
+        if (!document.hidden) {
+          exitConfirmed = false;
+          document.querySelector('#exit-title').textContent = 'One last step';
+          document.querySelector('#exit-message').textContent = 'Your browser will not let a webpage close its own tab. You can close this tab with the × button whenever you are ready.';
+          homeHelp.hidden = true;
+        }
+      }, 900);
+    } else {
+      window.close();
+      window.setTimeout(() => {
+        if (!window.closed) {
+          exitConfirmed = false;
+          document.querySelector('#exit-title').textContent = 'One last step';
+          document.querySelector('#exit-message').textContent = 'Your browser will not let a webpage close its own tab. You can close this tab with the × button whenever you are ready.';
+        }
+      }, 100);
+    }
+  });
+  document.querySelector('#exit-modal').addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeExitDialog();
+  });
+
+  // Browsers show their own confirmation for tab close or navigation; custom wording is restricted.
+  document.addEventListener('pointerdown', () => { leaveGuardArmed = true; }, { once: true });
+  document.addEventListener('keydown', () => { leaveGuardArmed = true; }, { once: true });
+  window.addEventListener('beforeunload', event => {
+    if (!leaveGuardArmed || exitConfirmed) return;
+    event.preventDefault();
+    event.returnValue = '';
+  });
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
   window.addEventListener('resize', layoutBoard);
   document.querySelector('#play-again').addEventListener('click', () => {
     const gameComplete = level === levelPairs[difficultyValue].length;

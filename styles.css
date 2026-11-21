@@ -64,3 +64,19 @@
 .game-board[data-difficulty="easy"],.game-board[data-difficulty="medium"],.game-board[data-difficulty="hard"]{row-gap:5px;column-gap:5px}
 @media(max-width:700px){.board-wrap{height:clamp(270px,42vh,390px)}}
 @media(max-width:470px){.board-wrap{height:clamp(250px,40vh,330px)}}
+/* Home-screen install and leave-game controls */
+.install-app,.leave-game{height:36px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #eee8f4;border-radius:11px;background:rgba(255,255,255,.84);color:#8063b6;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.install-app{padding:0 11px;font:600 10px "DM Sans",sans-serif;white-space:nowrap}
+.leave-game{width:36px;padding:0}
+.install-app:hover,.leave-game:hover{background:#f6f1fc;border-color:#d9c9f3;transform:translateY(-1px)}
+.install-app svg,.leave-game svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.install-app[hidden]{display:none}
+.exit-modal{padding-top:34px}
+.exit-icon{font-size:29px}
+.exit-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:22px}
+.exit-actions .button{min-height:38px}
+.exit-confirm{width:100%;border:0;background:transparent;color:#978da3;font:600 10px "DM Sans",sans-serif;padding:9px;cursor:pointer}
+.exit-confirm:hover{color:#7551bd;text-decoration:underline}
+.home-help{margin:14px 0 0;padding:11px 13px;border-radius:11px;background:#f8f5fc;color:#796b8e;font-size:10px;line-height:1.55}
+.home-help[hidden]{display:none}
+@media(max-width:470px){.install-app{height:32px;padding:0 7px;font-size:9px}.leave-game{width:32px;height:32px}.install-app svg,.leave-game svg{width:14px;height:14px}}

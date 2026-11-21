@@ -14,8 +14,11 @@ Upload the contents of this folder to a static host such as GitHub Pages, Netlif
 
 The game uses browser storage for personal bests. Sound is generated with the Web Audio API and begins only after the player presses Play. If the browser blocks audio, use the Play control again after interacting with the page.
 
+MindMatch can be installed from supported browsers using its web app manifest and service worker. The leave dialog offers the browser's install prompt when available, or instructions for adding it from the browser menu or iOS Share menu. Music pauses when the page is hidden. Browser tab-close confirmation wording is controlled by the browser.
+
 ## Project files
 
 - `index.html` — page structure and controls
 - `styles.css` — responsive layout, cards, and animations
 - `script.js` — game rules, level progression, audio, and personal bests
+- `manifest.webmanifest`, `service-worker.js`, and the icon files — home-screen installation and offline app shell

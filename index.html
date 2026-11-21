@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f8f5ff">
   <meta name="description" content="MindMatch — a little game for a brighter brain.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MindMatch">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="mindmatch-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <title>MindMatch — Find your flow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +28,8 @@
       </a>
       <div class="top-actions">
         <span class="top-note"><span class="sparkle">✦</span> A little brain break</span>
+        <button class="install-app" id="install-app" type="button" hidden aria-label="Add MindMatch to your home screen" title="Add MindMatch to your home screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg><span>Add to home</span></button>
+        <button class="leave-game" id="leave-game" type="button" aria-label="Leave MindMatch" title="Leave MindMatch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5m4-4 4-3-4-3m4 3H9"/></svg></button>
         <div class="music-control" aria-label="Background beat controls">
           <button class="music-toggle" type="button" aria-label="Play upbeat music" aria-pressed="false" title="Play upbeat music">
             <svg class="music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13M9 18c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2Z"/></svg>
@@ -91,6 +98,21 @@
 
   <div class="modal-backdrop" id="win-modal" role="dialog" aria-modal="true" aria-labelledby="win-title" hidden>
     <div class="win-modal"><button class="modal-close" id="close-modal" type="button" aria-label="Close results">×</button><div class="confetti confetti-a">✦</div><div class="confetti confetti-b">✿</div><div class="win-icon" aria-hidden="true">🎉</div><div class="win-eyebrow" id="win-eyebrow">LEVEL COMPLETE</div><h2 id="win-title">Congratulations!<br><span>You did it!</span></h2><p class="win-message" id="win-message">Look at you, making all the right connections.</p><div class="win-stats"><div><span>LEVEL</span><strong id="final-level">1</strong></div><div><span>MOVES</span><strong id="final-moves">0</strong></div><div><span>ACCURACY</span><strong id="final-accuracy">0%</strong></div></div><div class="win-time"><span>COMPLETION TIME</span><strong id="final-time">00:00</strong></div><button class="button button-primary play-again" id="play-again" type="button">Next level <span>↗</span></button></div>
+  </div>
+  <div class="modal-backdrop exit-backdrop" id="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-title" hidden>
+    <div class="win-modal exit-modal">
+      <button class="modal-close" id="exit-close" type="button" aria-label="Stay in the game">×</button>
+      <div class="win-icon exit-icon" aria-hidden="true">🏡</div>
+      <div class="win-eyebrow">TAKE THE FUN WITH YOU</div>
+      <h2 id="exit-title">Leaving already?</h2>
+      <p class="win-message" id="exit-message">Add MindMatch to your home screen so your next brain break is only a tap away. Do you want to leave?</p>
+      <div class="exit-actions">
+        <button class="button button-quiet" id="exit-stay" type="button">Stay and play</button>
+        <button class="button button-primary" id="exit-install" type="button">Add to home</button>
+        <button class="exit-confirm" id="exit-confirm" type="button">Leave MindMatch</button>
+      </div>
+      <p class="home-help" id="home-help" hidden>On iPhone or iPad: tap Share, then choose <strong>Add to Home Screen</strong>.</p>
+    </div>
   </div>
 </body>
 </html>
